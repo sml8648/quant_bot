@@ -2,7 +2,7 @@ import urllib3
 import json
 import traceback
 
-webhook_url = 'https://hooks.slack.com/services/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'
+webhook_url = ''
 
 # Send Slack notification based on the given message
 def slack_notification(message):
