@@ -80,6 +80,8 @@ if __name__ == '__main__':
 
     slack_notification('-----------------------------------')
 
+    print("test")
+
 # slack 알람까지 했단 말이지 그러면 뭘해야 되냐
 # airflow
 # 휴일인지 아닌지 판별하기
