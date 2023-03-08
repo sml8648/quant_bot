@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     slack_notification('-----------------------------------')
 
-    print("test2")
+    print("test32")
 
 # slack 알람까지 했단 말이지 그러면 뭘해야 되냐
 # airflow
