@@ -1,6 +1,6 @@
-## TODO
-## WISE Crawl
-## Naver financial crawl using thread or multiprocess
+# TODO
+# WISE Crawl
+# Naver financial crawl using thread or multiprocess
 
 from pykrx import stock
 import datetime
@@ -34,6 +34,8 @@ if __name__ == '__main__':
     df['category'] = df['티커'].progress_apply(category_parse)
 
     breakpoint()
+
+    
     
 
 
