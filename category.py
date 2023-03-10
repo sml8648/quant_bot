@@ -80,10 +80,19 @@ class get_ticker(KrxWebIo):
     def fetch(self, trdDd: str, mktId: str) -> DataFrame:
         result = self.read(mktId=market2mktid[mktId], trdDd=trdDd)
         return DataFrame(result['block1'])
+    
+class get_ticker2(KrxWebIo):
+    @property
+    def bld(self):
+        return "dbms/MDC/STAT/standard/MDCSTAT01901"
+
+    def fetch(self, trdDd: str, mktId: str) -> DataFrame:
+        result = self.read(mktId=market2mktid[mktId], trdDd=trdDd)
+        return DataFrame(result['OutBlock_1'])
 
 if __name__ == '__main__':
 
-    df = get_ticker().fetch('20230221','KOSPI')
+    df = get_ticker2().fetch('20230221','KOSDAQ')
 
     breakpoint()
 
