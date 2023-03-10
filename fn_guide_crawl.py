@@ -85,30 +85,56 @@ from tqdm import tqdm, tqdm_pandas
 #     breakpoint()
 #     return result
 
-import multiprocessing
-import time
+################## multiprocessing ##################################
+# import multiprocessing
+# import time
 
-def crawl_ticker(ticker):
+# def crawl_ticker(ticker):
 
-    url = f"https://comp.fnguide.com/SVO2/ASP/SVD_main.asp?pGB=1&gicode=A{ticker}"
-    response = requests.get(url)
-    try:
-        soup = bs(response.text, "html.parser")
-        per = soup.select('#corp_group2 > dl:nth-child(1) > dd')[0].text
-        category_per = soup.select('#corp_group2 > dl:nth-child(3) > dd')[0].text
-        category = soup.select('#compBody > div.section.ul_corpinfo > div.corp_group1 > p > span.stxt.stxt2')[0].text
-        category = category[4:].replace('\xa0','').strip()
-        return ticker, float(per), float(category_per), category
+#     url = f"https://comp.fnguide.com/SVO2/ASP/SVD_main.asp?pGB=1&gicode=A{ticker}"
+#     response = requests.get(url)
+#     try:
+#         soup = bs(response.text, "html.parser")
+#         per = soup.select('#corp_group2 > dl:nth-child(1) > dd')[0].text
+#         category_per = soup.select('#corp_group2 > dl:nth-child(3) > dd')[0].text
+#         category = soup.select('#compBody > div.section.ul_corpinfo > div.corp_group1 > p > span.stxt.stxt2')[0].text
+#         category = category[4:].replace('\xa0','').strip()
+#         return ticker, float(per), float(category_per), category
     
-    # FICS  섬유\xa0및\xa0의복
-    except:
-        return ticker, None, None, category
+#     # FICS  섬유\xa0및\xa0의복
+#     except:
+#         return ticker, None, None, category
 
-def crawl_all_ticker(tickers):
-    with multiprocessing.Pool() as pool:
-       result = list(tqdm(pool.map(crawl_ticker, tickers), total=len(tickers)))
-    return result
-            
+# def crawl_all_ticker(tickers):
+#     with multiprocessing.Pool() as pool:
+#        result = list(tqdm(pool.map(crawl_ticker, tickers), total=len(tickers)))
+#     return result
+
+import time
+import pandas as pd
+#################### Synchronous #####################################
+def crawl_without_thread(tickers):
+
+    result_list = []
+
+    for ticker in tqdm(tickers):
+
+        url = f"https://comp.fnguide.com/SVO2/ASP/SVD_main.asp?pGB=1&gicode=A{ticker}"
+        response = requests.get(url)
+        try:
+            soup = bs(response.text, "html.parser")
+            per = soup.select('#corp_group2 > dl:nth-child(1) > dd')[0].text
+            category_per = soup.select('#corp_group2 > dl:nth-child(3) > dd')[0].text
+            category = soup.select('#compBody > div.section.ul_corpinfo > div.corp_group1 > p > span.stxt.stxt2')[0].text
+            category = category[4:].replace('\xa0','').strip()
+            result_list.append((ticker, float(per), float(category_per), category))
+        
+        # FICS  섬유\xa0및\xa0의복
+        except:
+            result_list.append((ticker, None, None, category))
+    
+    return result_list
+
 if __name__ == '__main__':
 
     tmp = datetime.date.today()
@@ -122,10 +148,6 @@ if __name__ == '__main__':
     df = stock.get_market_fundamental(today)
     df.reset_index(inplace=True)
 
-    start = time.time()
-    result = crawl_all_ticker(df['티커'].tolist())
-    end = time.time()
-
-    print(end - start)
+    result = crawl_without_thread(df['티커'].tolist())
 
     breakpoint()

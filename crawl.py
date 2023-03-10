@@ -51,7 +51,7 @@ if __name__ == '__main__':
     
     df = df.loc[df['KIND_STKCERT_TP_NM'] == '보통주'].reset_index(drop=True)
 
-    result = crawl_all_ticker(df['티커'].tolist())
+    result = crawl_without_thread(df['티커'].tolist())
     result = pd.DataFrame(result, columns=['티커','PER','업종PER','업종'])
 
     df = pd.merge(df,result, left_on='티커', right_on='티커', how='inner')
@@ -108,7 +108,7 @@ if __name__ == '__main__':
     
     df = df.loc[df['KIND_STKCERT_TP_NM'] == '보통주'].reset_index(drop=True)
 
-    result = crawl_all_ticker(df['티커'].tolist())
+    result = crawl_without_thread(df['티커'].tolist())
     result = pd.DataFrame(result, columns=['티커','PER','업종PER','업종'])
 
     df = pd.merge(df,result, left_on='티커', right_on='티커', how='inner')
