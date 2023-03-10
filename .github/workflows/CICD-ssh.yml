@@ -19,3 +19,4 @@ jobs:
         script: |
             cd ${{ github.event.repository.name }}
             pwd
+            bash build.sh
