@@ -4,6 +4,9 @@ WORKDIR /app
 ENV PYTHONPATH /app
 ENV PYTHONBUFFERED=1
 
+RUN apt-get update
+RUN apt-get install vim
+
 RUN pip install pip==21.2.4 && \
 	pip install -r requirements.txt
 
